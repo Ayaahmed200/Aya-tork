@@ -1,0 +1,264 @@
+{
+	"info": {
+		"_postman_id": "605264a0-bb02-447b-8ab8-d91baab5e398",
+		"name": "Best Buy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Verify on status code\r",
+							"pm.test(\"Verify on Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"//Verify on content type\r",
+							"pm.test(\"Verify on Content-Type is present and type is application/json; charset=utf-8\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"});\r",
+							"\r",
+							"//Verify on the Scheme\r",
+							"const schema = {\r",
+							"    \"required\": [\r",
+							"        \"total\",\r",
+							"        \"limit\",\r",
+							"        \"skip\",\r",
+							"        \"data\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"total\": {\r",
+							"            \"type\": \"integer\",\r",
+							"            \"title\": \"The total number of products\",\r",
+							"            \r",
+							"        },\r",
+							"        \"limit\": {\r",
+							"            \"type\": \"integer\",\r",
+							"            \"title\": \"limit Number\",\r",
+							"         },\r",
+							"        \"skip\": {\r",
+							"            \"type\": \"integer\",\r",
+							"            \"title\": \"The skip number\",\r",
+							"        },\r",
+							"        \r",
+							"        \"data\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"properties\": {\r",
+							"\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                      },\r",
+							"                \"name\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                   \r",
+							"                },\r",
+							"                \"type\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                        },\r",
+							"\r",
+							"                        \"price\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                        \"upc\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                         \"shipping\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                        \"description\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                        \"manufacturer\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                         \"model\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                        \"url\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                        \"image\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                        },\r",
+							"                         \"createdAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"                         \"updatedAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"\r",
+							"                        \"categories\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"properties\": {\r",
+							"\r",
+							"                \"id\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                      },\r",
+							"                \"name\": {\r",
+							"                    \"type\": \"string\",\r",
+							"                   \r",
+							"                },\r",
+							"                \r",
+							"                         \"createdAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"                         \"updatedAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"\r",
+							"                    },\r",
+							"\r",
+							"                },\r",
+							"    },\r",
+							"},\r",
+							"    },\r",
+							"    }\r",
+							"\r",
+							"pm.test(\"Validate schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"//Save value for limit field\r",
+							"pm.environment.set(\"limit\", pm.response.json().limit);\r",
+							"\r",
+							"//count on data object\r",
+							"tests[\"Count: \" + (pm.response.json().data.length)] = true;\r",
+							"\r",
+							"//save data value as a variable\r",
+							"pm.environment.set(\"datavalue\", pm.response.json().data.length);\r",
+							"\r",
+							"//Validate on value of limit to be equal same number of objects in data object\r",
+							"pm.test(\"Validate on value of limit equal same number of objects in data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.limit).to.eql(jsonData.data.length);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Verify on status code\r",
+							"pm.test(\"Verify on Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201)\r",
+							"});\r",
+							"\r",
+							"//Verify on content type\r",
+							"pm.test(\"Verify on Content-Type is present and type is application/json; charset=utf-8\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8')\r",
+							"});\r",
+							"\r",
+							"//Verify on the Scheme\r",
+							"const schema = {\r",
+							"    \"required\": [\r",
+							"        \"id\",\r",
+							"        \"name\",\r",
+							"        \"updatedAt\",\r",
+							"        \"createdAt\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"id\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \r",
+							"            \r",
+							"        },\r",
+							"        \"name\": {\r",
+							"            \"type\": \"string\",\r",
+							"        },\r",
+							"                         \"createdAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"                         \"updatedAt\": {\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"format\": \"date-time\"\r",
+							"                        },\r",
+							"\r",
+							"                       \r",
+							"                    },\r",
+							"\r",
+							"                \r",
+							" \r",
+							"    }\r",
+							"\r",
+							"pm.test(\"Validate schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate on updatedAt date to be equal createdAt date \", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.updatedAt).to.eql(jsonData.createdAt);\r",
+							"});\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid');\r",
+							"postman.setEnvironmentVariable('id', uuid.v4());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"{{id}}\",\r\n  \"name\": \"Aya Ahmed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/categories",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
